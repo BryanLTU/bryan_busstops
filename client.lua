@@ -1,17 +1,5 @@
-local teleportPlayer = function(coords)
-    local playerPed = PlayerPedId()
-
-    DoScreenFadeOut(500)
-    Citizen.Wait(500)
-
-    SetEntityCoords(playerPed, coords.x, coords.y, coords.z, false, false, false, true)
-    SetEntityHeading(playerPed, coords.w)
-
-    Citizen.Wait(500)
-    DoScreenFadeIn(500)
-end
-
 local showProgressAndTeleport = function(entity, coords)
+    local playerPed = PlayerPedId()
     local seats = Config.Models[GetEntityModel(entity)]
     local emptySeatIndex
 
@@ -34,7 +22,6 @@ local showProgressAndTeleport = function(entity, coords)
             heading = heading - 360.0
         end
 
-        local playerPed = PlayerPedId()
         local startTime = GetGameTimer()
         TaskGoStraightToCoord(playerPed, seatCoords.x, seatCoords.y, seatCoords.z, 1.0, -1, heading, 0)
 
@@ -49,6 +36,9 @@ local showProgressAndTeleport = function(entity, coords)
         SetEntityHeading(playerPed, heading)
     end
 
+    lib.requestAnimDict('timetable@ron@ig_3_couch')
+    TaskPlayAnim(playerPed, 'timetable@ron@ig_3_couch', 'base', 3.0, 3.0, -1, 7, 0, false, false, false)
+
     local result = lib.progressBar({
         duration = 5000,
         label = 'Waiting for a bus',
@@ -58,11 +48,6 @@ local showProgressAndTeleport = function(entity, coords)
             car = true,
             move = true,
             combat = true
-        },
-        anim = {
-            dict = 'timetable@ron@ig_3_couch',
-            clip = 'base',
-            flag = 4
         }
     })
 
@@ -71,9 +56,21 @@ local showProgressAndTeleport = function(entity, coords)
     end
 
     if result then
+        DoScreenFadeOut(500)
+        Citizen.Wait(500)
+
         ClearPedTasks(PlayerPedId())
-        teleportPlayer(coords)
+
+        SetEntityCoords(playerPed, coords.x, coords.y, coords.z, false, false, false, true)
+        SetEntityHeading(playerPed, coords.w)
+
+        Citizen.Wait(500)
+        DoScreenFadeIn(500)
+    else
+        ClearPedTasks(PlayerPedId())
     end
+
+    RemoveAnimDict('timetable@ron@ig_3_couch')
 end
 
 local openBusStopMenu = function(entity)
