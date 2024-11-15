@@ -1,5 +1,9 @@
 Config = {}
 
+---@type number|false
+--- Could be set to number, if you want to charge players money
+Config.Price = false
+
 Config.TeleportLocations = {
     {label = "Alta Street", coords = vector4(-250.2917, -887.5287, 30.0739, 347.1240)},
     {label = "Legion", coords = vector4(115.9833, -781.7462, 31.3972, 166.8457)},

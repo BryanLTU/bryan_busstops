@@ -83,6 +83,10 @@ local openBusStopMenu = function(entity)
                 title = location.label,
                 icon = 'fas fa-map-marker-alt',
                 onSelect = function()
+                    if Config.Price and not lib.callback.await('busstop:server:checkMoney', false) then
+                        return
+                    end
+
                     showProgressAndTeleport(entity, location.coords)
                 end
             })

@@ -10,7 +10,16 @@ Simple bus stops script allowing players to travel in the map between bus stops.
 
 ## Configuration
 
-1. Teleport Locations
+1. Price
+If you want the players to pay for the bus, then put in a number. Example:
+```lua
+Config.Price = 10
+```
+
+> [!NOTE]
+> Remember to change the ``checkMoney()`` and ``removeMoney()`` functions in the ``server.lua`` file
+
+2. Teleport Locations
 
 - label - Bus stop name
 - coords - Location of the bus stop (where the player will teleport)
@@ -23,7 +32,7 @@ Config.TeleportLocations = {
 }
 ```
 
-2. Models
+3. Models
 - [key] - model hash
 - list item - each seat with it's offset
 
